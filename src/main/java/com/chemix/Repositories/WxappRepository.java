@@ -8,6 +8,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  */
 public interface WxappRepository extends MongoRepository<Wxapp, String> {
 
-    public Wxapp findById(String id);
+    public Wxapp findByAppName(String appName);
 
 }

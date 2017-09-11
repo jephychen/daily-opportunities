@@ -12,27 +12,27 @@ public class Wxapp {
 
     private String appid;
 
-    private String app_secret;
+    private String appSecret;
 
-    private String app_name;
+    private String appName;
 
     private String remark;
 
     public Wxapp() {
     }
 
-    public Wxapp(String appid, String app_secret, String app_name, String remark) {
+    public Wxapp(String appid, String appSecret, String appName, String remark) {
         this.appid = appid;
-        this.app_secret = app_secret;
-        this.app_name = app_name;
+        this.appSecret = appSecret;
+        this.appName = appName;
         this.remark = remark;
     }
 
-    public Wxapp(String id, String appid, String app_secret, String app_name, String remark) {
+    public Wxapp(String id, String appid, String appSecret, String appName, String remark) {
         this.id = id;
         this.appid = appid;
-        this.app_secret = app_secret;
-        this.app_name = app_name;
+        this.appSecret = appSecret;
+        this.appName = appName;
         this.remark = remark;
     }
 
@@ -52,20 +52,20 @@ public class Wxapp {
         this.appid = appid;
     }
 
-    public String getApp_secret() {
-        return app_secret;
+    public String getAppSecret() {
+        return appSecret;
     }
 
-    public void setApp_secret(String app_secret) {
-        this.app_secret = app_secret;
+    public void setAppSecret(String appSecret) {
+        this.appSecret = appSecret;
     }
 
-    public String getApp_name() {
-        return app_name;
+    public String getAppName() {
+        return appName;
     }
 
-    public void setApp_name(String app_name) {
-        this.app_name = app_name;
+    public void setAppName(String appName) {
+        this.appName = appName;
     }
 
     public String getRemark() {
