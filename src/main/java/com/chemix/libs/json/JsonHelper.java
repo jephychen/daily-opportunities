@@ -4,14 +4,18 @@ package com.chemix.libs.json;
  * Created by chenshijue on 2017/9/11.
  */
 
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
+import com.mongodb.util.JSON;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.text.ParseException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  *
@@ -74,12 +78,12 @@ public class JsonHelper {
         Map result = new HashMap();
         Iterator iterator = jsonObject.keys();
         String key = null;
-        String value = null;
+        Object value = null;
 
         while (iterator.hasNext()) {
 
             key = (String) iterator.next();
-            value = jsonObject.getString(key);
+            value = jsonObject.get(key);
             result.put(key, value);
 
         }
@@ -141,7 +145,71 @@ public class JsonHelper {
         Map map = toMap(jsonObject.toString());
 
         toJavaBean(javabean, map);
+    }
 
+    /*
+    * 此函数接受一个class类型和json字符串，返回指定class类型的对象。
+    * 此函数可递归转换，但目前不能支持数组，需要使用数组可以用list代替。
+    * */
+    public static Object parse(Class targetClass, String jsonString) throws Exception {
+        BasicDBObject jsonObj = (BasicDBObject) JSON.parse(jsonString);
+        Object o = parseJsonObj(targetClass, jsonObj);
+        return o;
+    }
+
+    private static Object parseJsonObj(Class targetType, BasicDBObject obj) throws Exception {
+        if (obj == null) return null;
+
+        Object o = targetType.newInstance();
+        Method[] methods = targetType.getDeclaredMethods();
+        for (Method method : methods){
+
+            //只关注javabean的set方法,只处理接受一个参数的方法
+            if (method.getName().startsWith("set") && method.getParameterCount() == 1) {
+                Class paramType = method.getParameterTypes()[0];
+                String field = getSetFieldName(method.getName());
+
+                //如果是基本类型和String
+                if (paramType.isPrimitive() || paramType.equals(String.class) ){
+                    method.invoke(o, new Object[] {
+                            obj.get(field)
+                    });
+                }
+                //如果是List类型
+                else if (paramType.equals(List.class)){
+                    //根据字段名获取字段Field，进而得到list中元素类型的class
+                    Field f = targetType.getDeclaredField(field);
+                    ParameterizedType fieldType = (ParameterizedType) f.getGenericType();
+                    Type elemType = fieldType.getActualTypeArguments()[0];
+                    Class elemClass = Class.forName(elemType.getTypeName());
+
+                    //从BasicDBList中获取元素，依次递归转换为目标类型并存入targetList
+                    List targetList = new LinkedList();
+                    BasicDBList elemList = (BasicDBList) obj.get(field);
+                    for (Object elem : elemList){
+                        targetList.add(parseJsonObj(elemClass, (BasicDBObject) elem));
+                    }
+
+                    //将转化好的元素list设置入对象中
+                    method.invoke(o, new Object[] {
+                           targetList
+                    });
+                }
+                //如果是其他复杂类型
+                else{
+                    method.invoke(o, new Object[] {
+                           parseJsonObj(paramType, (BasicDBObject) obj.get(field))
+                    });
+                }
+            }
+        }
+        return o;
+    }
+
+    private static String getSetFieldName(String setMethodName){
+        String field = setMethodName.substring(setMethodName.indexOf("set") + 3);
+        field = field.toLowerCase().charAt(0) + field.substring(1);
+        return field;
     }
 
 }

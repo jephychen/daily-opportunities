@@ -5,6 +5,7 @@ import com.chemix.Repositories.BusinessOpportunityRepository;
 import com.chemix.Repositories.WxappRepository;
 import com.chemix.libs.controller.BaseController;
 import com.chemix.libs.http.HttpUtils;
+import com.chemix.libs.json.JsonHelper;
 import com.chemix.models.BusinessOpportunity;
 import com.mongodb.BasicDBObject;
 import com.mongodb.util.JSON;
@@ -53,8 +54,14 @@ public class WxappController extends BaseController {
         bo.setGoods(goods);
         bo.setContact(contact);
         BusinessOpportunity newBo = businessOpportunityRepository.save(bo);*/
+        /*
         BusinessOpportunity bo = businessOpportunityRepository.findById("59b64b7b9142b400dd9f47ec");
-        return _true(bo);
+        */
+        //BusinessOpportunity bo = new BusinessOpportunity();
+        //JsonHelper.toJavaBean(bo, user_json);
+        BusinessOpportunity o = (BusinessOpportunity) JsonHelper.parse(BusinessOpportunity.class, user_json);
+        //BasicDBObject o = (BasicDBObject) JSON.parse(user_json);
+        return _true(o);
     }
 
     @RequestMapping(value = "/getWxAppUserInfo", method = RequestMethod.POST)
