@@ -1,4 +1,4 @@
-package com.chemix.models;
+package com.chemix.models.User;
 
 /**
  * Created by chenshijue on 2017/9/13.

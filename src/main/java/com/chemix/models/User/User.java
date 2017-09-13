@@ -1,4 +1,4 @@
-package com.chemix.models;
+package com.chemix.models.User;
 
 import org.springframework.data.annotation.Id;
 

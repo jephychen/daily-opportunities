@@ -1,6 +1,6 @@
 package com.chemix.Repositories;
 
-import com.chemix.models.User;
+import com.chemix.models.User.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**

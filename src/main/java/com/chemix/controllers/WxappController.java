@@ -1,15 +1,13 @@
 package com.chemix.controllers;
 
-import com.chemix.DailyOpportunitiesApplication;
 import com.chemix.Repositories.BusinessOpportunityRepository;
 import com.chemix.Repositories.UserRepository;
 import com.chemix.Repositories.WxappRepository;
 import com.chemix.libs.controller.BaseController;
 import com.chemix.libs.http.HttpUtils;
 import com.chemix.libs.json.JsonHelper;
-import com.chemix.models.BusinessOpportunity;
-import com.chemix.models.User;
-import com.chemix.models.Wxapp;
+import com.chemix.models.BusinessOpportunity.BusinessOpportunity;
+import com.chemix.models.User.User;
 import com.mongodb.BasicDBObject;
 import com.mongodb.util.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by chenshijue on 2017/9/11.

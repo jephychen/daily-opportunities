@@ -1,6 +1,6 @@
 package com.chemix.Repositories;
 
-import com.chemix.models.BusinessOpportunity;
+import com.chemix.models.BusinessOpportunity.BusinessOpportunity;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**

@@ -1,4 +1,4 @@
-package com.chemix.models;
+package com.chemix.models.BusinessOpportunity;
 
 /**
  * Created by chenshijue on 2017/9/11.
