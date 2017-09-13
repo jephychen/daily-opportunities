@@ -7,6 +7,7 @@ import com.chemix.libs.controller.BaseController;
 import com.chemix.libs.http.HttpUtils;
 import com.chemix.libs.json.JsonHelper;
 import com.chemix.models.BusinessOpportunity;
+import com.chemix.models.Wxapp;
 import com.mongodb.BasicDBObject;
 import com.mongodb.util.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,27 +41,7 @@ public class WxappController extends BaseController {
 
     @RequestMapping(value = "/addWxAppuser", method = RequestMethod.POST)
     public Result addWxAppuser(String user_json) throws Exception {
-        /*
-        Wxapp app = wxappRepository.findByAppName("每日商机");
-        BusinessOpportunity bo = new BusinessOpportunity();
-        bo.setCompanyName("氪米科技");
-        bo.setRegion("四川成都");
-        bo.setToUser("18682731302");
-        bo.setType("sell");
-        Good good = new Good("taifai", "1000", "1000");
-        List<Good> goods = new ArrayList<>();
-        goods.add(good);
-        Contact contact = new Contact("mr wang", "1868232334");
-        bo.setGoods(goods);
-        bo.setContact(contact);
-        BusinessOpportunity newBo = businessOpportunityRepository.save(bo);*/
-        /*
-        BusinessOpportunity bo = businessOpportunityRepository.findById("59b64b7b9142b400dd9f47ec");
-        */
-        //BusinessOpportunity bo = new BusinessOpportunity();
-        //JsonHelper.toJavaBean(bo, user_json);
         BusinessOpportunity o = (BusinessOpportunity) JsonHelper.parse(BusinessOpportunity.class, user_json);
-        //BasicDBObject o = (BasicDBObject) JSON.parse(user_json);
         return _true(o);
     }
 

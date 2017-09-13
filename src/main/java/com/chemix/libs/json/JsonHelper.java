@@ -171,9 +171,7 @@ public class JsonHelper {
 
                 //如果是基本类型和String
                 if (paramType.isPrimitive() || paramType.equals(String.class) ){
-                    method.invoke(o, new Object[] {
-                            obj.get(field)
-                    });
+                    method.invoke(o, new Object[] { obj.get(field)});
                 }
                 //如果是List类型
                 else if (paramType.equals(List.class)){
@@ -186,20 +184,17 @@ public class JsonHelper {
                     //从BasicDBList中获取元素，依次递归转换为目标类型并存入targetList
                     List targetList = new LinkedList();
                     BasicDBList elemList = (BasicDBList) obj.get(field);
+                    if (elemList == null) continue;
                     for (Object elem : elemList){
                         targetList.add(parseJsonObj(elemClass, (BasicDBObject) elem));
                     }
 
                     //将转化好的元素list设置入对象中
-                    method.invoke(o, new Object[] {
-                           targetList
-                    });
+                    method.invoke(o, new Object[] { targetList });
                 }
                 //如果是其他复杂类型
                 else{
-                    method.invoke(o, new Object[] {
-                           parseJsonObj(paramType, (BasicDBObject) obj.get(field))
-                    });
+                    method.invoke(o, new Object[] { parseJsonObj(paramType, (BasicDBObject) obj.get(field))});
                 }
             }
         }
