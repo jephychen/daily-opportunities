@@ -1,6 +1,7 @@
 package com.chemix.models.User;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 
 /**
  * Created by chenshijue on 2017/9/13.
@@ -23,6 +24,9 @@ public class User {
     private Category interestingCategory;
 
     private WxInfo wxInfo;
+
+    @Transient
+    private String jwt;
 
     private String remark;
 
@@ -118,5 +122,13 @@ public class User {
 
     public void setWxInfo(WxInfo wxInfo) {
         this.wxInfo = wxInfo;
+    }
+
+    public String getJwt() {
+        return jwt;
+    }
+
+    public void setJwt(String jwt) {
+        this.jwt = jwt;
     }
 }

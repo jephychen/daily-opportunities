@@ -25,6 +25,7 @@ import java.util.Set;
 import java.util.zip.GZIPInputStream;
 
 /**
+ * 此类为腾讯程序员编写
  * ClassName: HttpUtils
  *
  * @Description: http 请求工具类
