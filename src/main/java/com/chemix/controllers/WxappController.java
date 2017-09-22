@@ -10,18 +10,13 @@ import com.chemix.libs.http.HttpUtils;
 import com.chemix.libs.json.JsonHelper;
 import com.chemix.models.BusinessOpportunity.BusinessOpportunity;
 import com.chemix.models.User.User;
+import com.chemix.services.TestService;
 import com.mongodb.BasicDBObject;
 import com.mongodb.util.JSON;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,13 +52,18 @@ public class WxappController extends BaseController {
     @Autowired
     private HttpServletRequest httpRequest;
 
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    private TestService testService;
+
     @RequestMapping("/test")
     public Result test(String code) throws IOException {
-        String url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + appid + "&secret="
-                + appsecret + "&js_code=" + code + "&grant_type=authorization_code";
-        String url1 = "https://huaxue.drea.mx/groups_encrypt/services/rest/businessopportunity/getBuyBo";
-        Object responseBody = HttpHelper.get(url1);
-        return _true(JSON.parse((String) responseBody));
+        //ValueOperations<String, String> opsForValue = stringRedisTemplate.opsForValue();
+        //opsForValue.set("nokey", "from spring boot again");
+        //String value = opsForValue.get("nokey");
+        return _true(testService.test());
     }
 
     @RequestMapping(value = "/addWxAppuser", method = RequestMethod.POST)
