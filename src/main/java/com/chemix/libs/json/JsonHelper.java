@@ -169,9 +169,14 @@ public class JsonHelper {
                 Class paramType = method.getParameterTypes()[0];
                 String field = getSetFieldName(method.getName());
 
-                //如果是基本类型和String
-                if (paramType.isPrimitive() || paramType.equals(String.class) ){
-                    method.invoke(o, new Object[] { obj.get(field)});
+                //如果是基本类型
+                if (isPrimitive(paramType)){
+                    if (obj.get(field) != null)
+                        method.invoke(o, obj.get(field));
+                }
+                //如果是string类型
+                else if (paramType.equals(String.class)){
+                    method.invoke(o, obj.get(field));
                 }
                 //如果是List类型
                 else if (paramType.equals(List.class)){
@@ -186,15 +191,19 @@ public class JsonHelper {
                     BasicDBList elemList = (BasicDBList) obj.get(field);
                     if (elemList == null) continue;
                     for (Object elem : elemList){
-                        targetList.add(parseJsonObj(elemClass, (BasicDBObject) elem));
+                        if (isPrimitive(elemClass)|| elemClass.equals(String.class)){
+                            targetList.add(elem);
+                        }
+                        else
+                            targetList.add(parseJsonObj(elemClass, (BasicDBObject) elem));
                     }
 
                     //将转化好的元素list设置入对象中
-                    method.invoke(o, new Object[] { targetList });
+                    method.invoke(o, targetList);
                 }
                 //如果是其他复杂类型
                 else{
-                    method.invoke(o, new Object[] { parseJsonObj(paramType, (BasicDBObject) obj.get(field))});
+                    method.invoke(o, parseJsonObj(paramType, (BasicDBObject) obj.get(field)));
                 }
             }
         }
@@ -205,6 +214,18 @@ public class JsonHelper {
         String field = setMethodName.substring(setMethodName.indexOf("set") + 3);
         field = field.toLowerCase().charAt(0) + field.substring(1);
         return field;
+    }
+
+    private static boolean isPrimitive(Class type){
+        return type.isPrimitive()
+                || type.getName().equals("java.lang.Boolean")
+                || type.getName().equals("java.lang.Character")
+                || type.getName().equals("java.lang.Integer")
+                || type.getName().equals("java.lang.Byte")
+                || type.getName().equals("java.lang.Short")
+                || type.getName().equals("java.lang.Long")
+                || type.getName().equals("java.lang.Float")
+                || type.getName().equals("java.lang.Double");
     }
 
 }
